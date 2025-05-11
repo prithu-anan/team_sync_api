@@ -1,0 +1,2553 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "TeamSync Full API",
+    "description" : "Full Swagger documentation with all CRUD operations for TeamSync entities.",
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/buet-787/TeamSync/1.0.0",
+    "description" : "SwaggerHub API Auto Mocking"
+  }, {
+    "url" : "http://localhost:3000",
+    "description" : "Local development server"
+  } ],
+  "security" : [ {
+    "bearerAuth" : [ ]
+  } ],
+  "paths" : {
+    "/auth/register" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Register a new user",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "User registered successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_201"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid input or email already exists"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/auth/login" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Authenticate a user and get token",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserLogin"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Authentication successful",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Invalid credentials"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/auth/refresh" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Refresh authentication token",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_refresh_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Token refreshed successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_1"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Invalid or expired refresh token"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/auth/logout" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Invalidate current tokens",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_logout_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Logged out successfully"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      }
+    },
+    "/auth/password-reset-request" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Request password reset email",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_passwordresetrequest_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Reset email sent if account exists"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/auth/password-reset" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Reset password with token",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_passwordreset_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Password reset successful"
+          },
+          "400" : {
+            "description" : "Invalid or expired token"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/auth/verify-email" : {
+      "get" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Verify user email address",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Email verified successfully"
+          },
+          "400" : {
+            "description" : "Invalid or expired token"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        },
+        "security" : [ ]
+      }
+    },
+    "/auth/me" : {
+      "get" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Get current user profile",
+        "responses" : {
+          "200" : {
+            "description" : "User profile retrieved successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Update current user profile",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_me_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "User profile updated successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      }
+    },
+    "/auth/password-change" : {
+      "post" : {
+        "tags" : [ "Authentication" ],
+        "summary" : "Change password (when logged in)",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/auth_passwordchange_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Password changed successfully"
+          },
+          "400" : {
+            "description" : "Current password is incorrect"
+          },
+          "401" : {
+            "description" : "Unauthorized"
+          },
+          "500" : {
+            "description" : "Server error"
+          }
+        }
+      }
+    },
+    "/users" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Get all Users",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Create a new User",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/users/{id}" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Get a specific User",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Users" ],
+        "summary" : "Update a specific User",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Users" ],
+        "summary" : "Delete a specific User",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/projects" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Get all Projects",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Create a new Project",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProjectCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/projects/{id}" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Get a specific Project",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Update a specific Project",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Project"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Delete a specific Project",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/projects/{id}/members" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Get all members of a Project",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Add a member to a Project",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProjectMemberAdd"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Member added"
+          }
+        }
+      }
+    },
+    "/projects/{project_id}/members/{user_id}" : {
+      "put" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Update a member's role in a Project",
+        "parameters" : [ {
+          "name" : "project_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProjectMemberUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Member role updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Remove a member from a Project",
+        "parameters" : [ {
+          "name" : "project_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Member removed"
+          }
+        }
+      }
+    },
+    "/projects/{id}/tasks" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Get all tasks for a specific Project",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/projects/{id}/kanban" : {
+      "get" : {
+        "tags" : [ "Projects" ],
+        "summary" : "Get tasks organized by status for Kanban view",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/tasks" : {
+      "get" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Get all Tasks",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Create a new Task",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/tasks/{id}" : {
+      "get" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Get a specific Task",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Update a specific Task",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Task"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Delete a specific Task",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/tasks/{id}/assign" : {
+      "put" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Assign a Task to a user",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskAssign"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Task assigned"
+          }
+        }
+      }
+    },
+    "/tasks/{id}/status" : {
+      "put" : {
+        "tags" : [ "Tasks" ],
+        "summary" : "Update Task status (move in Kanban)",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TaskStatusUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Status updated"
+          }
+        }
+      }
+    },
+    "/messages" : {
+      "get" : {
+        "tags" : [ "Messages" ],
+        "summary" : "Get all Messages",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Messages" ],
+        "summary" : "Create a new Message",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MessageCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/messages/{id}" : {
+      "get" : {
+        "tags" : [ "Messages" ],
+        "summary" : "Get a specific Message",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Messages" ],
+        "summary" : "Update a specific Message",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Message"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Messages" ],
+        "summary" : "Delete a specific Message",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/channels" : {
+      "get" : {
+        "tags" : [ "Channels" ],
+        "summary" : "Get all Channels",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Channels" ],
+        "summary" : "Create a new Channel",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ChannelCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/channels/{id}" : {
+      "get" : {
+        "tags" : [ "Channels" ],
+        "summary" : "Get a specific Channel",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Channels" ],
+        "summary" : "Update a specific Channel",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Channel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Channels" ],
+        "summary" : "Delete a specific Channel",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/feedposts" : {
+      "get" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Get all FeedPosts",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Create a new FeedPost",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FeedPostCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/feedposts/{id}" : {
+      "get" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Get a specific FeedPost",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Update a specific FeedPost",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/FeedPost"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Delete a specific FeedPost",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/feedposts/{id}/reactions" : {
+      "get" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Get all reactions for a FeedPost",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Add a reaction to a FeedPost",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReactionCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Reaction added"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Feed" ],
+        "summary" : "Remove a reaction from a FeedPost",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "reaction_type",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Reaction removed"
+          }
+        }
+      }
+    },
+    "/comments" : {
+      "get" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Get all Comments",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Create a new Comment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CommentCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/comments/{id}" : {
+      "get" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Get a specific Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Update a specific Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Comment"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Delete a specific Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/comments/{id}/reactions" : {
+      "get" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Get all reactions for a Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Add a reaction to a Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReactionCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Reaction added"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Remove a reaction from a Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer"
+          }
+        }, {
+          "name" : "reaction_type",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Reaction removed"
+          }
+        }
+      }
+    },
+    "/comments/{id}/replies" : {
+      "get" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Get all replies to a Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Comments" ],
+        "summary" : "Add a reply to a Comment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CommentReplyCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Reply added"
+          }
+        }
+      }
+    },
+    "/pollvotes" : {
+      "get" : {
+        "tags" : [ "Polls" ],
+        "summary" : "Get all PollVotes",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Polls" ],
+        "summary" : "Create a new PollVote",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PollVoteCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/pollvotes/{id}" : {
+      "get" : {
+        "tags" : [ "Polls" ],
+        "summary" : "Get a specific PollVote",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Polls" ],
+        "summary" : "Update a specific PollVote",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PollVote"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Polls" ],
+        "summary" : "Delete a specific PollVote",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/appreciations" : {
+      "get" : {
+        "tags" : [ "Kudos" ],
+        "summary" : "Get all Appreciations",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Kudos" ],
+        "summary" : "Create a new Appreciation",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AppreciationCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/appreciations/{id}" : {
+      "get" : {
+        "tags" : [ "Kudos" ],
+        "summary" : "Get a specific Appreciation",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Kudos" ],
+        "summary" : "Update a specific Appreciation",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Appreciation"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Kudos" ],
+        "summary" : "Delete a specific Appreciation",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    },
+    "/events" : {
+      "get" : {
+        "tags" : [ "Events" ],
+        "summary" : "Get all Events",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Events" ],
+        "summary" : "Create a new Event",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventCreate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/events/{id}" : {
+      "get" : {
+        "tags" : [ "Events" ],
+        "summary" : "Get a specific Event",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Events" ],
+        "summary" : "Update a specific Event",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Event"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Updated"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Events" ],
+        "summary" : "Delete a specific Event",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Deleted"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "profile_picture" : {
+            "type" : "string"
+          },
+          "designation" : {
+            "type" : "string"
+          },
+          "birthdate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "join_date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "mood_score" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "predicted_burnout_risk" : {
+            "type" : "boolean"
+          }
+        }
+      },
+      "UserCreate" : {
+        "required" : [ "email", "name", "password" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          }
+        }
+      },
+      "UserLogin" : {
+        "required" : [ "email", "password" ],
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Project" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "created_by" : {
+            "type" : "integer"
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "members" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ProjectMember"
+            }
+          }
+        }
+      },
+      "ProjectCreate" : {
+        "required" : [ "title" ],
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "initial_members" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ProjectMemberInit"
+            }
+          }
+        }
+      },
+      "ProjectMember" : {
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "owner", "admin", "member", "guest", "viewer" ]
+          },
+          "joined_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "ProjectMemberInit" : {
+        "required" : [ "role", "user_id" ],
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "owner", "admin", "member", "guest", "viewer" ]
+          }
+        }
+      },
+      "ProjectMemberAdd" : {
+        "required" : [ "role", "user_id" ],
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "owner", "admin", "member", "guest", "viewer" ]
+          }
+        }
+      },
+      "ProjectMemberUpdate" : {
+        "required" : [ "role" ],
+        "type" : "object",
+        "properties" : {
+          "role" : {
+            "type" : "string",
+            "enum" : [ "owner", "admin", "member", "guest", "viewer" ]
+          }
+        }
+      },
+      "Task" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "backlog", "todo", "in_progress", "in_review", "blocked", "completed" ]
+          },
+          "deadline" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "priority" : {
+            "type" : "string",
+            "enum" : [ "low", "medium", "high", "urgent" ]
+          },
+          "time_estimate" : {
+            "type" : "string",
+            "description" : "ISO 8601 duration (e.g., 'PT2H')"
+          },
+          "ai_time_estimate" : {
+            "type" : "string"
+          },
+          "ai_priority" : {
+            "type" : "string"
+          },
+          "smart_deadline" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "project_id" : {
+            "type" : "integer"
+          },
+          "assigned_to" : {
+            "type" : "integer"
+          },
+          "assigned_by" : {
+            "type" : "integer"
+          },
+          "assigned_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "parent_task_id" : {
+            "type" : "integer"
+          },
+          "subtasks" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "status_history" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TaskStatusHistory"
+            }
+          }
+        }
+      },
+      "TaskCreate" : {
+        "required" : [ "project_id", "title" ],
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "default" : "backlog",
+            "enum" : [ "backlog", "todo", "in_progress", "in_review", "blocked", "completed" ]
+          },
+          "assigned_to" : {
+            "type" : "integer"
+          },
+          "deadline" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "priority" : {
+            "type" : "string",
+            "default" : "medium",
+            "enum" : [ "low", "medium", "high", "urgent" ]
+          },
+          "parent_task_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "TaskAssign" : {
+        "required" : [ "user_id" ],
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "TaskStatusUpdate" : {
+        "required" : [ "status" ],
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "backlog", "todo", "in_progress", "in_review", "blocked", "completed" ]
+          },
+          "comment" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TaskStatusHistory" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "enum" : [ "backlog", "todo", "in_progress", "in_review", "blocked", "completed" ]
+          },
+          "changed_by" : {
+            "type" : "integer"
+          },
+          "changed_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "comment" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Message" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "sender_id" : {
+            "type" : "integer"
+          },
+          "channel_id" : {
+            "type" : "integer"
+          },
+          "recipient_id" : {
+            "type" : "integer"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "sentiment_score" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "suggested_replies" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "thread_parent_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "MessageCreate" : {
+        "required" : [ "content" ],
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "string"
+          },
+          "channel_id" : {
+            "type" : "integer"
+          },
+          "recipient_id" : {
+            "type" : "integer"
+          },
+          "thread_parent_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Channel" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "direct", "group" ]
+          },
+          "project_id" : {
+            "type" : "integer"
+          },
+          "members" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          }
+        }
+      },
+      "ChannelCreate" : {
+        "required" : [ "name", "type" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "direct", "group" ]
+          },
+          "project_id" : {
+            "type" : "integer"
+          },
+          "member_ids" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          }
+        }
+      },
+      "FeedPost" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "text", "photo", "event", "shoutout", "poll", "birthday", "highlight" ]
+          },
+          "author_id" : {
+            "type" : "integer"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "media_urls" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "event_date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "poll_options" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "is_ai_generated" : {
+            "type" : "boolean"
+          },
+          "ai_summary" : {
+            "type" : "string"
+          },
+          "reactions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Reaction"
+            }
+          }
+        }
+      },
+      "FeedPostCreate" : {
+        "required" : [ "content", "type" ],
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "media_urls" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "event_date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "poll_options" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "Comment" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "post_id" : {
+            "type" : "integer"
+          },
+          "author_id" : {
+            "type" : "integer"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "parent_comment_id" : {
+            "type" : "integer"
+          },
+          "reactions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Reaction"
+            }
+          },
+          "reply_count" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "CommentCreate" : {
+        "required" : [ "content", "post_id" ],
+        "type" : "object",
+        "properties" : {
+          "post_id" : {
+            "type" : "integer"
+          },
+          "content" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CommentReplyCreate" : {
+        "required" : [ "content" ],
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "string"
+          },
+          "author_id" : {
+            "type" : "integer"
+          }
+        }
+      },
+      "Reaction" : {
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
+          },
+          "reaction_type" : {
+            "type" : "string",
+            "enum" : [ "like", "love", "haha", "wow", "sad", "angry", "celebrate", "support", "insightful" ]
+          },
+          "created_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "ReactionCreate" : {
+        "required" : [ "reaction_type", "user_id" ],
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
+          },
+          "reaction_type" : {
+            "type" : "string",
+            "enum" : [ "like", "love", "haha", "wow", "sad", "angry", "celebrate", "support", "insightful" ]
+          }
+        }
+      },
+      "PollVote" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "poll_id" : {
+            "type" : "integer"
+          },
+          "user_id" : {
+            "type" : "integer"
+          },
+          "selected_option" : {
+            "type" : "string"
+          }
+        }
+      },
+      "PollVoteCreate" : {
+        "required" : [ "poll_id", "selected_option" ],
+        "type" : "object",
+        "properties" : {
+          "poll_id" : {
+            "type" : "integer"
+          },
+          "selected_option" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Appreciation" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "from_user_id" : {
+            "type" : "integer"
+          },
+          "to_user_id" : {
+            "type" : "integer"
+          },
+          "message" : {
+            "type" : "string"
+          },
+          "timestamp" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "AppreciationCreate" : {
+        "required" : [ "message", "to_user_id" ],
+        "type" : "object",
+        "properties" : {
+          "to_user_id" : {
+            "type" : "integer"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Event" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string",
+            "enum" : [ "Birthday", "Workiversary", "Outing" ]
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "participants" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          }
+        }
+      },
+      "EventCreate" : {
+        "required" : [ "date", "title", "type" ],
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "date" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "participant_ids" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          }
+        }
+      },
+      "inline_response_201" : {
+        "type" : "object",
+        "properties" : {
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200" : {
+        "type" : "object",
+        "properties" : {
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "token" : {
+            "type" : "string"
+          },
+          "refreshToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "auth_refresh_body" : {
+        "required" : [ "refreshToken" ],
+        "type" : "object",
+        "properties" : {
+          "refreshToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_1" : {
+        "type" : "object",
+        "properties" : {
+          "token" : {
+            "type" : "string"
+          },
+          "refreshToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "auth_logout_body" : {
+        "required" : [ "refreshToken" ],
+        "type" : "object",
+        "properties" : {
+          "refreshToken" : {
+            "type" : "string"
+          }
+        }
+      },
+      "auth_passwordresetrequest_body" : {
+        "required" : [ "email" ],
+        "type" : "object",
+        "properties" : {
+          "email" : {
+            "type" : "string"
+          }
+        }
+      },
+      "auth_passwordreset_body" : {
+        "required" : [ "newPassword", "token" ],
+        "type" : "object",
+        "properties" : {
+          "token" : {
+            "type" : "string"
+          },
+          "newPassword" : {
+            "type" : "string"
+          }
+        }
+      },
+      "auth_me_body" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "profile_picture" : {
+            "type" : "string"
+          },
+          "designation" : {
+            "type" : "string"
+          }
+        }
+      },
+      "auth_passwordchange_body" : {
+        "required" : [ "currentPassword", "newPassword" ],
+        "type" : "object",
+        "properties" : {
+          "currentPassword" : {
+            "type" : "string"
+          },
+          "newPassword" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
