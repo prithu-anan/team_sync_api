@@ -361,7 +361,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_201"
+                }
+              }
+            }
           }
         }
       },
@@ -460,7 +467,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
           }
         }
       },
@@ -719,7 +733,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
           }
         }
       },
@@ -880,7 +901,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_4"
+                }
+              }
+            }
           }
         }
       },
@@ -979,7 +1007,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_5"
+                }
+              }
+            }
           }
         }
       },
@@ -1078,7 +1113,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_6"
+                }
+              }
+            }
           }
         }
       },
@@ -1147,7 +1189,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_7"
+                }
+              }
+            }
           }
         }
       },
@@ -1264,7 +1313,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_8"
+                }
+              }
+            }
           }
         }
       },
@@ -1500,7 +1556,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_9"
+                }
+              }
+            }
           }
         }
       },
@@ -1698,7 +1761,14 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK"
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_10"
+                }
+              }
+            }
           }
         }
       },
@@ -1771,7 +1841,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_200_2"
+                  "$ref" : "#/components/schemas/inline_response_200_11"
                 }
               }
             }
@@ -1799,7 +1869,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_200_3"
+                  "$ref" : "#/components/schemas/inline_response_200_12"
                 }
               }
             }
@@ -2679,13 +2749,112 @@
       "inline_response_200_2" : {
         "type" : "object",
         "properties" : {
+          "project" : {
+            "$ref" : "#/components/schemas/Project"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_3" : {
+        "type" : "object",
+        "properties" : {
+          "task" : {
+            "$ref" : "#/components/schemas/Task"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_4" : {
+        "type" : "object",
+        "properties" : {
+          "message-text" : {
+            "$ref" : "#/components/schemas/Message"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_5" : {
+        "type" : "object",
+        "properties" : {
+          "channel" : {
+            "$ref" : "#/components/schemas/Channel"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_6" : {
+        "type" : "object",
+        "properties" : {
+          "feedpost" : {
+            "$ref" : "#/components/schemas/FeedPost"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_7" : {
+        "type" : "object",
+        "properties" : {
+          "reaction" : {
+            "$ref" : "#/components/schemas/Reaction"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_8" : {
+        "type" : "object",
+        "properties" : {
+          "comment" : {
+            "$ref" : "#/components/schemas/Comment"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_9" : {
+        "type" : "object",
+        "properties" : {
+          "pollvote" : {
+            "$ref" : "#/components/schemas/PollVote"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_10" : {
+        "type" : "object",
+        "properties" : {
+          "event" : {
+            "$ref" : "#/components/schemas/Event"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_11" : {
+        "type" : "object",
+        "properties" : {
           "smart_deadline" : {
             "type" : "string",
             "format" : "date-time"
           }
         }
       },
-      "inline_response_200_3" : {
+      "inline_response_200_12" : {
         "type" : "object",
         "properties" : {
           "reply" : {
