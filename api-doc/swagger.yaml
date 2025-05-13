@@ -1750,6 +1750,118 @@
           }
         }
       }
+    },
+    "/tasks/{id}/estimate-deadline" : {
+      "post" : {
+        "tags" : [ "AI" ],
+        "summary" : "Estimate smart deadline for a Task",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Smart deadline estimated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_2"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/messages/{id}/auto-reply" : {
+      "post" : {
+        "tags" : [ "AI" ],
+        "summary" : "Generate automatic reply for a Message",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Auto-reply generated",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/inline_response_200_3"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/feedposts/generate-birthday" : {
+      "post" : {
+        "tags" : [ "AI" ],
+        "summary" : "Generate automatic birthday post for a user",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/feedposts_generatebirthday_body"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Birthday post created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FeedPost"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mood-snapshot/{project_id}" : {
+      "get" : {
+        "tags" : [ "AI" ],
+        "summary" : "Get mood snapshot for a project",
+        "parameters" : [ {
+          "name" : "project_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Mood snapshot data",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MoodSnapshot"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
@@ -2440,6 +2552,29 @@
           }
         }
       },
+      "MoodSnapshot" : {
+        "type" : "object",
+        "properties" : {
+          "project_id" : {
+            "type" : "integer"
+          },
+          "avg_mood_score" : {
+            "type" : "number",
+            "format" : "float"
+          },
+          "summary" : {
+            "type" : "string"
+          },
+          "trend" : {
+            "type" : "string",
+            "enum" : [ "upward", "downward", "stable" ]
+          },
+          "generated_at" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
       "inline_response_201" : {
         "type" : "object",
         "properties" : {
@@ -2538,6 +2673,32 @@
           },
           "newPassword" : {
             "type" : "string"
+          }
+        }
+      },
+      "inline_response_200_2" : {
+        "type" : "object",
+        "properties" : {
+          "smart_deadline" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "inline_response_200_3" : {
+        "type" : "object",
+        "properties" : {
+          "reply" : {
+            "type" : "string"
+          }
+        }
+      },
+      "feedposts_generatebirthday_body" : {
+        "required" : [ "user_id" ],
+        "type" : "object",
+        "properties" : {
+          "user_id" : {
+            "type" : "integer"
           }
         }
       }
